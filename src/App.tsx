@@ -25,16 +25,35 @@ export default function App() {
             setTime((t) => {
                if (t.hours === 0 && t.minutes === 0 && t.seconds === 0) {
                   setIsTicking(false);
+               } else if (t.minutes === 0 && t.seconds === 0) {
+                  return {
+                     ...t,
+                     hours: t.hours - 1,
+                     minutes: 59,
+                     seconds: 59,
+                  };
+               } else if (t.seconds === 0) {
+                  return {
+                     ...t,
+                     minutes: t.minutes - 1,
+                     seconds: 59,
+                  };
+               } else {
+                  return {
+                     ...t,
+                     seconds: t.seconds - 1,
+                  };
                }
 
                return {
-                  ...t,
-                  seconds: t.seconds - 1,
+                  hours: 0,
+                  minutes: 0,
+                  seconds: 0,
                };
             });
          }, 1000);
       }
-      return () => clearInterval(intervalId); // прочитать про cleanup function
+      return () => clearInterval(intervalId);
    }, [isTicking]);
 
    function handleHoursChange(e: React.ChangeEvent<HTMLInputElement>) {
